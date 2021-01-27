@@ -328,3 +328,100 @@ Create a repair job in the following:
 
 1. Only one job at a time can be running per report suite.
 
+
+### Actions
+
+* `delete`: Delete the values associated with the given variable.
+* `set`: Set the values associated with a given variable to a fixed value. 
+    * By default, only values that are currently non-empty will be updated.  To update empty values, see the `isEmpty` filter below.
+
+Example:
+```
+{
+    {
+        "variables": {
+            "evar241": {
+                "action": "delete"
+            },
+            "evar242": {
+                "action": "set",
+                "setValue": "newvalue"
+            }
+        }
+    }
+}
+
+```
+
+### Filters
+
+* `inList`: Only update fields whose values are in the given list (limit 1000 entries).
+* `isEmpty`: Only update fields that are currently empty.
+    * The `isEmpty` filters is not valid when using the `delete` action as no 
+* `containsAtSign`: Only update fields whose values contain the `@` symbol.
+ 
+ Example:
+```
+{
+    {
+        "variables": {
+            "evar241": {
+                "action": "set",
+                "setValue": "newvalue",
+                "filters": [{
+                    "condition": "inList",
+                    "value": ["value1", "value2"]
+                }]
+            },
+            "evar242": {
+                "action": "set",
+                "setValue": "newvalue",
+                "filters": [{
+                    "condition": isEmpty"
+                }]
+            },
+            "evar243": {
+                "action": "delete",
+                "filters": [{
+                    "condition": containsAtSign"
+                }]
+            }
+        }
+    }
+}
+```
+
+
+#### Table Example
+
+|Variable|Actions|Filters|Notes|
+|---|---|---|---|
+|activitymap|delete|-|This includes `clickmappage`, `clickmaplink`, `clickmapregion`, as well as the context data used to populate these identities.|
+|prop1-N|delete,set|inList,isEmpty,containsAtSign||
+|evar1-N|delete,set|inList,isEmpty,containsAtSign||
+|ipaddress|delete|inList||
+|campaign|delete,set|inList,isEmpty,containsAtSign||
+|page|?|?||
+
+#### Row Example
+
+#### activitymap
+Actions: delete\
+Filters: -\
+Notes: This includes `clickmappage`, `clickmaplink`, `clickmapregion`, as well as the context data used to populate these identities.|
+
+#### prop1-N
+Actions: delete, set\
+Filters: inList,isEmpty,containsAtSign
+
+#### evar1-N
+Actions: delete, set\
+Filters: inList,isEmpty,containsAtSign
+
+#### ipaddress
+Actions: delete\
+Filters: inList
+
+#### campaign
+Actions: delete, set\
+Filters: inList,isEmpty,containsAtSign
